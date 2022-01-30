@@ -1,12 +1,15 @@
-.App {
+/*.App {
   padding: 30px;
   display: flex;
-}
+}*/
 
-.App > div {
+/*.App > div {
   margin-right: 50px;
-}
+}*/
 
+body {
+  background-color: antiquewhite;
+}
 .error {
   border: red 1px solid;
 }
@@ -22,4 +25,7 @@
 .is-done {
   opacity: 0.5;
 }
-
+.Description {
+  font-size: 20px;
+  max-width: 250px;
+}

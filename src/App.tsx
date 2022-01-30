@@ -140,12 +140,6 @@ function App() {
                 </AppBar>
             </Box>
             <Container fixed>
-                <div style={{position: 'absolute', left: '10px', top: '60px'}}>
-                    <p className={'Description'}>1)Планируй свои дела</p>
-                    <p  className={'Description'}>2)Отмечай статус выполнения</p>
-                    <p  className={'Description'}>3)Редактируй</p>
-                </div>
-
                 <Grid container style={{padding:"10px", margin:'0 0 0 10px'}}>
                     <AddItemForm addItem={addTodolist} title={'Add'} label={'Enter name task'}/>
                 </Grid>

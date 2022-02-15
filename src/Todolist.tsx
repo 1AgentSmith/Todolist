@@ -68,7 +68,7 @@ export function Todolist(props: PropsType) {
                                 color: green[800],
                             },
                         }}/>
-                        <EditableSpan value={t.title} onChange={()=>onTitleChangeHandler(t.id, t.title)} />
+                        <EditableSpan value={t.title} onChange={(newValue)=>onTitleChangeHandler(t.id, newValue)} />
                         <IconButton aria-label="delete">
                             <Delete onClick={()=>onClickHandler(t.id)} />
                         </IconButton>

@@ -12,13 +12,12 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Container, Grid, Paper} from '@mui/material';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTasksAC, tasksReducer} from './state/tasks-reducer';
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTasksAC} from './state/tasks-reducer';
 import {
     addTodolistAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     removeTodolistAC,
-    todolistsReducer
 } from './state/todolists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootReducerType} from './state/store';
@@ -41,7 +40,6 @@ function AppWithRedux() {
 
     const todolists = useSelector<RootReducerType, Array<TodolistType>>(state => state.todolists)
     const tasks = useSelector<RootReducerType, TasksStateType>(state => state.tasks)
-
 
 
     function removeTask(taskID: string, todolistId: string) {

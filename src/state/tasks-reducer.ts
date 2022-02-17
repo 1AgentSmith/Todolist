@@ -17,15 +17,14 @@ type ActionsType =
 
 
 const initialState: TasksStateType = {
-    [todolistId1]: [
-        {id: v1(), title: 'HTML/CSS', isDone: true},
-        {id: v1(), title: 'JS', isDone: true},
-    ],
-    [todolistId2]: [
-        {id: v1(), title: 'Milk', isDone: true},
-        {id: v1(), title: 'React book', isDone: true},
-    ],
-
+    // [todolistId1]: [
+    //     {id: v1(), title: 'HTML/CSS', isDone: true},
+    //     {id: v1(), title: 'JS', isDone: true},
+    // ],
+    // [todolistId2]: [
+    //     {id: v1(), title: 'Milk', isDone: true},
+    //     {id: v1(), title: 'React book', isDone: true},
+    // ],
 }
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {

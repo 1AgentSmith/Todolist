@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {FilterValuesType} from './App';
 import {AddItemForm} from './components/AddItemForm';
 import {EditableSpan} from './components/EditableSpan';
@@ -86,9 +86,10 @@ export function Todolist(props: PropsType) {
 */
 
 export const Todolist = React.memo((props: PropsType)=> {
-    const addTask = (title: string) => {
+    console.log(' todolist is called')
+    const addTask = useCallback( (title: string) => {
         props.addTask(title, props.id);
-    }
+    }, [])
 
     const removeTodolist = () => {
         props.removeTodolist(props.id);
@@ -108,7 +109,13 @@ export const Todolist = React.memo((props: PropsType)=> {
     const onTitleChangeHandler = (id: string, newValue: string) => {
         props.changeTaskTitle(id, newValue, props.id);
     }
-
+    let tasksForTodolist = props.tasks
+    if (props.filter === 'active') {
+        tasksForTodolist = props.tasks.filter(t => !t.isDone);
+    }
+    if (props.filter === 'completed') {
+        tasksForTodolist = props.tasks.filter(t => t.isDone);
+    }
     return <div>
         <h3> <EditableSpan value={props.title} onChange={changeTodolistTitle} />
             <IconButton aria-label="delete">

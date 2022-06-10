@@ -9,11 +9,12 @@ export const FilterReducer =(state: FilterValuesType, action: ChangeFilterACType
     }
 }
 type ChangeFilterACType = ReturnType<typeof changeFilterAC>
-export const changeFilterAC = (value: FilterValuesType) => {
+export const changeFilterAC = (todolistID: string, value: FilterValuesType) => {
     return{
         type: "CHANGE-FILTER",
         payload: {
-            value
+            value,
+            todolistID,
         }
     } as const
 }

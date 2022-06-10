@@ -23,8 +23,7 @@ export const EditableSpan = (props: PropsType) => {
     }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            setEditMode(false)
-            props.callBack(title)
+            deactivateEditMode()
         }
     }
     return (
@@ -33,7 +32,7 @@ export const EditableSpan = (props: PropsType) => {
                           onChange={onChangeHandler}
                           onBlur={deactivateEditMode}
                           autoFocus
-                          onKeyPress={onKeyPressHandler}/> : <span onDoubleClick={activateEditMode}>{props.title}</span>
+                          onKeyPress={onKeyPressHandler}/> : <span onDoubleClick={activateEditMode}>{title}</span>
     )
 
 }

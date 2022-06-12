@@ -2,8 +2,15 @@ import React, {useReducer} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './components/Todolist';
 import {v1} from 'uuid';
-import {addTaskAC, ChangeTaskStatusAC, ChangeTaskTitleAC, removeTaskAC, TasksReducer} from "./reducers/TasksReducer";
-import {changeTodolistFilterAC, TodolistReducer} from "./reducers/TodolistReducer";
+import {
+    addTaskAC, addTodolistTasksArrayAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    removeTaskAC,
+    TasksReducer
+} from "./reducers/TasksReducer";
+import {addTodolistAC, changeTodolistFilterAC, TodolistReducer} from "./reducers/TodolistReducer";
+import {AddItemForm} from "./components/AddItemForm";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -20,7 +27,7 @@ function App() {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
-    let [todolists, todolistDispatch] = useReducer(TodolistReducer, [
+    let [todolists, todolistDispatch]   = useReducer(TodolistReducer, [
         {id: todolistId1, title: 'What to learn', filter: 'all'},
         {id: todolistId2, title: 'What to buy', filter: 'all'}
     ])
@@ -41,7 +48,7 @@ function App() {
             {id: v1(), title: "GraphQL", isDone: false},
         ],
     });
-
+    //------------------------------------------Tasks functions-------------------------------------------------
     const removeTask = (todolistID: string, taskID: string) => {
         tasksDispatch(removeTaskAC(todolistID, taskID))
     }
@@ -54,17 +61,26 @@ function App() {
         todolistDispatch(changeTodolistFilterAC(todolistID, filterValue))
     }
 
-    const changeTaskStatus = (taskID: string, isDone: boolean) => {
-        tasksDispatch(ChangeTaskStatusAC(taskID, isDone))
+    const changeTaskStatus = (todolistID: string, taskID: string, isDone: boolean) => {
+        tasksDispatch(changeTaskStatusAC(todolistID, taskID, isDone))
     }
 
-    const changeTaskTitle = (taskID: string, changedTaskTitle: string) => {
-        tasksDispatch(ChangeTaskTitleAC(taskID, changedTaskTitle))
+    const changeTaskTitle = (todolistID: string, taskID: string, changedTaskTitle: string) => {
+        tasksDispatch(changeTaskTitleAC(todolistID, taskID, changedTaskTitle))
+    }
+    //------------------------------------------------------------------------------------------------------------
+
+    // -------------------TodoList functions-------------------------------------------------------------------
+    const addTodolist = (todolistTitle: string)=> {
+        let idForNewTodolist = v1()
+        todolistDispatch(addTodolistAC(idForNewTodolist, todolistTitle))
+        tasksDispatch(addTodolistTasksArrayAC(idForNewTodolist))
     }
 
     return (
         <div className="App">
-            {todolists.map(todolist => {
+            <AddItemForm buttonName={'+ create new list'} callBack={(todolistTitle)=> addTodolist(todolistTitle)}/>
+            {todolists.map((todolist: TodolistType) => {
                 //!!!ПОВТОРИТЬ ФИЛЬТРЫ!!!(почему именно здесь пишется условие. Да бы 2 с половиной часа были потрачены не напрасно)
                 let tasksForTodolist = tasks[todolist.id]
                 if (todolist.filter === 'active') {
@@ -73,6 +89,7 @@ function App() {
                 if (todolist.filter === 'completed') {
                     tasksForTodolist = tasks[todolist.id].filter(task => task.isDone)
                 }
+
                 return (
                     <Todolist key={todolist.id}
                               title={todolist.title}

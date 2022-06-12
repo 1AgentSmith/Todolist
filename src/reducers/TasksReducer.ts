@@ -6,7 +6,8 @@ type AllTypeAC =
     AddTaskACType |
     ChangeTaskStatusACType |
     ChangeTaskTitleACType |
-    AddTodolistTasksArrayAcType
+    AddTodolistTasksArrayAcType |
+    RemoveTodolistTasksArrayACType
 
 export const TasksReducer = (state: TaskStateType,
                              action: AllTypeAC): TaskStateType => {
@@ -57,6 +58,11 @@ export const TasksReducer = (state: TaskStateType,
                 ...state,
                 [action.payload.todolistID]: []
             }
+        }
+        case "REMOVE-TODOLIST-ARRAY-TASKS": {
+            let copyState = {...state}
+            delete copyState[action.payload.todolistID]
+            return copyState
         }
         default:
             return state
@@ -120,6 +126,16 @@ type AddTodolistTasksArrayAcType = ReturnType<typeof addTodolistTasksArrayAC>
 export const addTodolistTasksArrayAC = (todolistID: string) => {
     return {
         type: 'ADD-TODOLIST-TASKS-ARRAY',
+        payload: {
+            todolistID,
+        }
+    } as const
+}
+
+type RemoveTodolistTasksArrayACType = ReturnType<typeof removeTodolistArrayTasksAC>
+export const removeTodolistArrayTasksAC = (todolistID: string) => {
+    return {
+        type: 'REMOVE-TODOLIST-ARRAY-TASKS',
         payload: {
             todolistID,
         }

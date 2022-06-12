@@ -10,7 +10,7 @@ export type TaskType = {
 }
 
 type PropsType = {
-    title: string
+    todolistTitle: string
     todolistID: string
     tasks: Array<TaskType>
     removeTask: (todolistID: string, taskID: string) => void
@@ -18,11 +18,13 @@ type PropsType = {
     addTask: (todolistID: string, title: string) => void
     changeTaskStatus: (todolistID: string, taskID: string, isDone: boolean) => void
     changeTaskTitle: (todolistID: string, taskID: string, taskTitle: string) => void
+    removeTodolist: (todolistID: string) => void
+    changeTodolistTitle: (todolistID: string, todolistTitle: string) => void
 }
 
 export function Todolist(props: PropsType) {
 
-    const addTaskFromProps = (title: string) => {
+    const onClickAddTaskHandler = (title: string) => {
         props.addTask(props.todolistID, title);
     }
 
@@ -40,11 +42,23 @@ export function Todolist(props: PropsType) {
         props.changeTaskTitle(props.todolistID, mapID, changedTaskTitle)
     }
 
+    const onClickRemoveTodolistHandler = (todolistID: string) => {
+        props.removeTodolist(todolistID)
+    }
+    const onChangeTodolistTitleHandler = (changedTodolistTitle: string) => {
+        props.changeTodolistTitle(props.todolistID, changedTodolistTitle)
+    }
     return <div>
-        <h3>{props.title}</h3>
-
+        <h3>
+            <EditableSpan title={props.todolistTitle}
+                          callBack={
+                              (changedTodolistTitle) => onChangeTodolistTitleHandler(changedTodolistTitle)
+                          }
+            />
+            <button onClick={() => onClickRemoveTodolistHandler(props.todolistID)}>X</button>
+        </h3>
         <AddItemForm buttonName={'Add'}
-                     callBack={(title) => addTaskFromProps(title)}/>
+                     callBack={(title) => onClickAddTaskHandler(title)}/>
 
         <ul>
             {

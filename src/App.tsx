@@ -3,13 +3,19 @@ import './App.css';
 import {TaskType, Todolist} from './components/Todolist';
 import {v1} from 'uuid';
 import {
-    addTaskAC, addTodolistTasksArrayAC,
+    addTaskAC,addTodolistTasksArrayAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
     TasksReducer
 } from "./reducers/TasksReducer";
-import {addTodolistAC, changeTodolistFilterAC, TodolistReducer} from "./reducers/TodolistReducer";
+import {
+    addTodolistAC,
+    changeTodolistFilterAC,
+    ChangeTodolistTitleAC,
+    removeTodolistAC,
+    TodolistReducer
+} from "./reducers/TodolistReducer";
 import {AddItemForm} from "./components/AddItemForm";
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -76,12 +82,17 @@ function App() {
         todolistDispatch(addTodolistAC(idForNewTodolist, todolistTitle))
         tasksDispatch(addTodolistTasksArrayAC(idForNewTodolist))
     }
+    const removeTodolist = (todolistID: string)=> {
+        todolistDispatch(removeTodolistAC(todolistID))
+    }
+    const changeTodolistTitle = (todolistID: string, todolistTitle: string)=> {
+        todolistDispatch(ChangeTodolistTitleAC(todolistID, todolistTitle))
+    }
 
     return (
         <div className="App">
             <AddItemForm buttonName={'+ create new list'} callBack={(todolistTitle)=> addTodolist(todolistTitle)}/>
             {todolists.map((todolist: TodolistType) => {
-                //!!!ПОВТОРИТЬ ФИЛЬТРЫ!!!(почему именно здесь пишется условие. Да бы 2 с половиной часа были потрачены не напрасно)
                 let tasksForTodolist = tasks[todolist.id]
                 if (todolist.filter === 'active') {
                     tasksForTodolist = tasks[todolist.id].filter(task => !task.isDone)
@@ -92,7 +103,7 @@ function App() {
 
                 return (
                     <Todolist key={todolist.id}
-                              title={todolist.title}
+                              todolistTitle={todolist.title}
                               tasks={tasksForTodolist}
                               removeTask={removeTask}
                               changeFilter={changeTodolistFilter}
@@ -100,6 +111,8 @@ function App() {
                               changeTaskStatus={changeTaskStatus}
                               changeTaskTitle={changeTaskTitle}
                               todolistID={todolist.id}
+                              removeTodolist={removeTodolist}
+                              changeTodolistTitle={changeTodolistTitle}
                     />
                 )
             })}

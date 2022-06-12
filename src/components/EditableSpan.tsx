@@ -11,7 +11,7 @@ export const EditableSpan = (props: PropsType) => {
 
     const activateEditMode = () => {
         setEditMode(true)
-        setTitle(props.title)
+        setTitle(title)
     }
     const deactivateEditMode = () => {
         setEditMode(false)

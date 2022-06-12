@@ -6,7 +6,7 @@ type AllActionTodolistType =
     AddTodolistACType |
     ChangeTodolistTitleACType
 
-export const TodolistReducer = (state: Array<TodolistType>,
+export const todolistReducer = (state: Array<TodolistType>,
                                 action: AllActionTodolistType): Array<TodolistType> => {
     switch (action.type) {
         case 'REMOVE-TODOLIST': {
@@ -71,8 +71,8 @@ export const addTodolistAC = (todolistID: string, todolistTitle: string) => {
     } as const
 }
 
-type ChangeTodolistTitleACType = ReturnType<typeof ChangeTodolistTitleAC>
-export const ChangeTodolistTitleAC = (todolistID: string, changedTodolistTitle: string) => {
+type ChangeTodolistTitleACType = ReturnType<typeof changeTodolistTitleAC>
+export const changeTodolistTitleAC = (todolistID: string, changedTodolistTitle: string) => {
     return {
         type: 'CHANGE-TODOLIST-TITLE',
         payload: {
@@ -81,4 +81,6 @@ export const ChangeTodolistTitleAC = (todolistID: string, changedTodolistTitle: 
         }
     } as const
 }
+
+
 

@@ -6,7 +6,7 @@ type PropsType = {
 }
 
 export const AddItemForm = ({buttonName, callBack, ...restProps}: PropsType) => {
-    const [title, setTitle] = useState('')
+    const [title, setTitle] = useState<string>('')
 
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.currentTarget.value)

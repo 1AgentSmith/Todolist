@@ -3,7 +3,7 @@ import {todolistReducer} from "./todolist-reducer";
 import {tasksReducer} from "./tasks-reducer";
 
 const rootReducer = combineReducers({
-    todolists: todolistReducer,
+    todoLists: todolistReducer,
     tasks: tasksReducer,
 })
 

@@ -27,7 +27,6 @@ type PropsType = {
     todolistID: string
     filterValue: FilterValuesType
 }
-
 export function Todolist(props: PropsType) {
     const dispatch = useDispatch()
     const tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[props.todolistID])
@@ -40,6 +39,7 @@ export function Todolist(props: PropsType) {
     if (props.filterValue === 'completed') {
         filteredTasks = tasks.filter(task => task.isDone)
     }
+
     return <div>
         <h3>
             <EditableSpan title={props.todolistTitle}
@@ -59,7 +59,7 @@ export function Todolist(props: PropsType) {
                         <li key={t.id}>
                             <input type="checkbox" checked={t.isDone}
                                    onChange={() =>
-                                       dispatch(changeTaskStatusAC(props.todolistID, t.id, t.isDone))}
+                                       dispatch(changeTaskStatusAC(props.todolistID, t.id, !t.isDone))}
                             />
                             <EditableSpan title={t.title}
                                           callBack={(changedTaskTitle) =>
@@ -79,7 +79,7 @@ export function Todolist(props: PropsType) {
                 dispatch(changeTodolistFilterAC(props.todolistID, 'active'))}>Active
             </button>
             <button onClick={() =>
-                dispatch(changeTodolistFilterAC(props.todolistID, 'active'))}>Completed
+                dispatch(changeTodolistFilterAC(props.todolistID, 'completed'))}>Completed
             </button>
         </div>
     </div>

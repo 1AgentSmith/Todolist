@@ -32,10 +32,8 @@ export const tasksReducer = (state: TaskStateType = initialState,
         case 'REMOVE-TASK' : {
             return {
                 ...state,
-                [action.payload.todolistID]:
-                    state[action.payload.todolistID].filter(
-                        (task) => task.id !== action.payload.taskID
-                    )
+                [action.payload.todolistID]: state[action.payload.todolistID]
+                    .filter((task) => task.id !== action.payload.taskID)
             }
         }
         case "ADD-TASK": {
@@ -55,7 +53,7 @@ export const tasksReducer = (state: TaskStateType = initialState,
                 ...state,
                 [action.payload.todolistID]: state[action.payload.todolistID].map(
                     (task) => task.id === action.payload.taskID ?
-                        {...task, isDone: !action.payload.isDone} : task
+                        {...task, isDone: action.payload.isDone} : task
                 )
             }
         }

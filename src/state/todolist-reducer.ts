@@ -18,31 +18,39 @@ export const todolistReducer = (state: Array<TodolistType> = initialState,
                                 action: AllActionTodolistType): Array<TodolistType> => {
     switch (action.type) {
         case 'REMOVE-TODOLIST': {
-            return state.filter(todolist => todolist.id !== action.payload.todolistID)
+            return state.filter(
+                todolist => todolist.id !== action.payload.todolistID
+            )
         }
-        case 'CHANGE-TODOLIST-FILTER' : {
+        case 'CHANGE-TODOLIST-FILTER': {
             return state.map(todolist =>
-                todolist.id === action.payload.todolistID ? {
-                    ...todolist,
-                    filter: action.payload.filterValue
-                } : todolist)
+                todolist.id === action.payload.todolistID
+                    ? {
+                        ...todolist,
+                        filter: action.payload.filterValue,
+                    }
+                    : todolist
+            )
         }
-        case "ADD-TODOLIST": {
+        case 'ADD-TODOLIST': {
             return [
                 {
                     id: action.payload.todolistID,
                     title: action.payload.todolistTitle,
-                    filter: 'all'
+                    filter: 'all',
                 },
-                ...state
+                ...state,
             ]
         }
-        case "CHANGE-TODOLIST-TITLE": {
+        case 'CHANGE-TODOLIST-TITLE': {
             return state.map(todolist =>
-                todolist.id === action.payload.todolistID ? {
-                    ...todolist,
-                    title: action.payload.changedTodolistTitle
-                } : todolist)
+                todolist.id === action.payload.todolistID
+                    ? {
+                        ...todolist,
+                        title: action.payload.changedTodolistTitle,
+                    }
+                    : todolist
+            )
         }
         default:
             return state
@@ -76,8 +84,8 @@ export const addTodolistAC = (todolistID: string, todolistTitle: string) => {
         type: 'ADD-TODOLIST',
         payload: {
             todolistTitle,
-            todolistID
-        }
+            todolistID,
+        },
     } as const
 }
 
@@ -88,7 +96,7 @@ export const changeTodolistTitleAC = (todolistID: string, changedTodolistTitle: 
         payload: {
             todolistID,
             changedTodolistTitle,
-        }
+        },
     } as const
 }
 

@@ -7,6 +7,8 @@ import {addTodolistAC} from './state/todolist-reducer'
 import {AddItemForm} from './components/AddItemForm'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './state/store'
+import ButtonAppBar from "./components/AppBar";
+import {Container, Grid, Paper} from "@mui/material";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -32,20 +34,35 @@ function App() {
 
     return (
         <div className='App'>
-            <AddItemForm
-                buttonName={'+ create new list'}
-                callBack={todolistTitle => addTodolist(todolistTitle)}
-            />
-            {todoLists.map((todolist: TodolistType) => {
-                return (
-                    <Todolist
-                        key={todolist.id}
-                        todolistTitle={todolist.title}
-                        filterValue={todolist.filter}
-                        todolistID={todolist.id}
+            <ButtonAppBar/>
+            <Container fixed>
+                <Grid container={true} style={{padding:'20px'}}>
+                    <AddItemForm
+                        buttonName={'+ create new list'}
+                        callBack={todolistTitle => addTodolist(todolistTitle)}
                     />
-                )
-            })}
+                </Grid>
+
+                <Grid container spacing={3}>
+                    {todoLists.map((todolist: TodolistType) => {
+                        return (
+                            <Grid item>
+                                <Paper elevation={3} style={{padding: "10px"}}>
+                                    <Todolist
+                                        key={todolist.id}
+                                        todolistTitle={todolist.title}
+                                        filterValue={todolist.filter}
+                                        todolistID={todolist.id}
+                                    />
+                                </Paper>
+
+                            </Grid>
+                        )
+                    })}
+                </Grid>
+
+            </Container>
+
         </div>
     )
 }

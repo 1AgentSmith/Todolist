@@ -15,6 +15,9 @@ import {
     removeTodolistAC
 } from "../state/todolist-reducer";
 import {AppRootStateType} from "../state/store";
+import {Button, Checkbox, IconButton} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 export type TaskType = {
     id: string
@@ -27,6 +30,7 @@ type PropsType = {
     todolistID: string
     filterValue: FilterValuesType
 }
+
 export function Todolist(props: PropsType) {
     const dispatch = useDispatch()
     const tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[props.todolistID])
@@ -47,9 +51,12 @@ export function Todolist(props: PropsType) {
                               (changedTodolistTitle) => dispatch(changeTodolistTitleAC(props.todolistID, changedTodolistTitle))
                           }
             />
-            <button onClick={() => dispatch(removeTodolistAC(props.todolistID))}>X</button>
+            <IconButton aria-label="delete">
+                <DeleteIcon onClick={() => dispatch(removeTodolistAC(props.todolistID))}/>
+            </IconButton>
+
         </h3>
-        <AddItemForm buttonName={'Add'}
+        <AddItemForm buttonName={'+'}
                      callBack={(title) => dispatch(addTaskAC(props.todolistID, title))}/>
 
         <ul>
@@ -57,30 +64,31 @@ export function Todolist(props: PropsType) {
                 filteredTasks.map(t => {
                     return (
                         <li key={t.id}>
-                            <input type="checkbox" checked={t.isDone}
-                                   onChange={() =>
-                                       dispatch(changeTaskStatusAC(props.todolistID, t.id, !t.isDone))}
-                            />
+                            <Checkbox defaultChecked size={'small'} color={'success'} checked={t.isDone} onChange={() =>
+                                dispatch(changeTaskStatusAC(props.todolistID, t.id, !t.isDone))}/>
                             <EditableSpan title={t.title}
                                           callBack={(changedTaskTitle) =>
                                               dispatch(changeTaskTitleAC(props.todolistID, t.id, changedTaskTitle))}
                             />
-                            <button onClick={() => dispatch(removeTaskAC(props.todolistID, t.id))}>x</button>
+                            <IconButton aria-label="delete">
+                                <DeleteIcon fontSize={'small'} onClick={() => dispatch(removeTaskAC(props.todolistID, t.id))}/>
+                            </IconButton>
                         </li>
                     )
                 })
             }
         </ul>
         <div>
-            <button onClick={() =>
+            <Button variant={props.filterValue === 'all' ? 'contained' : 'outlined'} color={'info'} onClick={() =>
                 dispatch(changeTodolistFilterAC(props.todolistID, 'all'))}>All
-            </button>
-            <button onClick={() =>
+            </Button>
+            <Button variant={props.filterValue === 'active' ? 'contained' : 'outlined'} color={'warning'} onClick={() =>
                 dispatch(changeTodolistFilterAC(props.todolistID, 'active'))}>Active
-            </button>
-            <button onClick={() =>
-                dispatch(changeTodolistFilterAC(props.todolistID, 'completed'))}>Completed
-            </button>
+            </Button>
+            <Button variant={props.filterValue === 'completed' ? 'contained' : 'outlined'} color={'success'}
+                    onClick={() =>
+                        dispatch(changeTodolistFilterAC(props.todolistID, 'completed'))}>Completed
+            </Button>
         </div>
     </div>
 }

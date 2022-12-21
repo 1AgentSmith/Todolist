@@ -18,7 +18,6 @@ export type TodolistType = {
 export type TaskStateType = {
     [key: string]: Array<TaskType>
 }
-
 function App() {
 
     const dispatch = useDispatch()

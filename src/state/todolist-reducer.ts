@@ -10,10 +10,7 @@ type AllActionTodolistType =
 export let todolistId1 = v1();
 export let todolistId2 = v1();
 
-let initialState: Array<TodolistType> = [
-    {id: todolistId1, title: 'What to learn', filter: 'all'},
-    {id: todolistId2, title: 'What to buy', filter: 'all'}
-]
+let initialState: Array<TodolistType> = []
 export const todolistReducer = (state: Array<TodolistType> = initialState,
                                 action: AllActionTodolistType): Array<TodolistType> => {
     switch (action.type) {
@@ -57,7 +54,7 @@ export const todolistReducer = (state: Array<TodolistType> = initialState,
     }
 }
 
-type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>
+export type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>
 export const removeTodolistAC = (todolistID: string) => {
     return {
         type: 'REMOVE-TODOLIST',
@@ -78,13 +75,13 @@ export const changeTodolistFilterAC = (todolistID: string, filterValue: FilterVa
     } as const
 }
 
-type AddTodolistACType = ReturnType<typeof addTodolistAC>;
-export const addTodolistAC = (todolistID: string, todolistTitle: string) => {
+export type AddTodolistACType = ReturnType<typeof addTodolistAC>;
+export const addTodolistAC = (todolistTitle: string) => {
     return {
         type: 'ADD-TODOLIST',
         payload: {
             todolistTitle,
-            todolistID,
+            todolistID: v1()
         },
     } as const
 }

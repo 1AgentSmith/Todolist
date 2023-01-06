@@ -1,31 +1,16 @@
 import {v1} from "uuid";
 import {TaskStateType} from "../App";
-import {todolistId1, todolistId2} from "./todolist-reducer";
+import {AddTodolistACType, RemoveTodolistACType} from "./todolist-reducer";
 
 type AllTypeAC =
     RemoveTaskACType |
     AddTaskACType |
     ChangeTaskStatusACType |
     ChangeTaskTitleACType |
-    AddTodolistTasksArrayAcType |
-    RemoveTodolistTasksArrayACType
+    RemoveTodolistACType |
+    AddTodolistACType
 
-let initialState: TaskStateType = {
-    [todolistId1]: [
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Rest API", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},
-    ],
-    [todolistId2]: [
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Rest API", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},
-    ],
-}
+let initialState: TaskStateType = {}
 export const tasksReducer = (state: TaskStateType = initialState,
                              action: AllTypeAC): TaskStateType => {
     switch (action.type) {
@@ -67,13 +52,13 @@ export const tasksReducer = (state: TaskStateType = initialState,
                 )
             }
         }
-        case "ADD-TODOLIST-TASKS-ARRAY": {
+        case "ADD-TODOLIST": {
             return {
                 ...state,
                 [action.payload.todolistID]: []
             }
         }
-        case "REMOVE-TODOLIST-ARRAY-TASKS": {
+        case "REMOVE-TODOLIST": {
             let copyState = {...state}
             delete copyState[action.payload.todolistID]
             return copyState
@@ -135,24 +120,3 @@ export const changeTaskTitleAC = (todolistID: string,
         }
     } as const
 }
-
-type AddTodolistTasksArrayAcType = ReturnType<typeof addTodolistTasksArrayAC>
-export const addTodolistTasksArrayAC = (todolistID: string) => {
-    return {
-        type: 'ADD-TODOLIST-TASKS-ARRAY',
-        payload: {
-            todolistID,
-        }
-    } as const
-}
-
-type RemoveTodolistTasksArrayACType = ReturnType<typeof removeTodolistArrayTasksAC>
-export const removeTodolistArrayTasksAC = (todolistID: string) => {
-    return {
-        type: 'REMOVE-TODOLIST-ARRAY-TASKS',
-        payload: {
-            todolistID,
-        }
-    } as const
-}
-

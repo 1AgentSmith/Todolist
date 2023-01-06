@@ -1,8 +1,6 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import './App.css'
 import {TaskType, Todolist} from './components/Todolist'
-import {v1} from 'uuid'
-import {addTodolistTasksArrayAC} from './state/tasks-reducer'
 import {addTodolistAC} from './state/todolist-reducer'
 import {AddItemForm} from './components/AddItemForm'
 import {useDispatch, useSelector} from 'react-redux'
@@ -20,27 +18,26 @@ export type TodolistType = {
 export type TaskStateType = {
     [key: string]: Array<TaskType>
 }
+
 function App() {
+    console.log('App is called')
     const dispatch = useDispatch()
     const todoLists = useSelector<AppRootStateType, Array<TodolistType>>(
         state => state.todoLists
     )
 
-    const addTodolist = (todolistTitle: string) => {
-        let idForNewTodolist = v1()
-        dispatch(addTodolistAC(idForNewTodolist, todolistTitle))
-        dispatch(addTodolistTasksArrayAC(idForNewTodolist))
-    }
+    const addTodolist = useCallback((todolistTitle: string) => {
+        // let idForNewTodolist = v1()
+        dispatch(addTodolistAC(todolistTitle))
+        // dispatch(addTodolistTasksArrayAC(idForNewTodolist))
+    }, [dispatch])
 
     return (
         <div className='App'>
             <ButtonAppBar/>
             <Container fixed>
-                <Grid container={true} style={{padding:'20px'}}>
-                    <AddItemForm
-                        buttonName={'+ create new list'}
-                        callBack={todolistTitle => addTodolist(todolistTitle)}
-                    />
+                <Grid container={true} style={{padding: '20px'}}>
+                    <AddItemForm callBack={addTodolist}/>
                 </Grid>
 
                 <Grid container spacing={3}>
@@ -49,7 +46,6 @@ function App() {
                             <Grid item>
                                 <Paper elevation={3} style={{padding: "10px"}}>
                                     <Todolist
-                                        key={todolist.id}
                                         todolistTitle={todolist.title}
                                         filterValue={todolist.filter}
                                         todolistID={todolist.id}

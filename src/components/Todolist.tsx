@@ -1,12 +1,9 @@
-import React from 'react';
+import React, {memo, useCallback} from 'react';
 import {FilterValuesType} from '../App';
 import {EditableSpan} from "./EditableSpan";
 import {AddItemForm} from "./AddItemForm";
 import {
-    addTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeTaskAC
+    addTaskAC
 } from "../state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -15,8 +12,9 @@ import {
     removeTodolistAC
 } from "../state/todolist-reducer";
 import {AppRootStateType} from "../state/store";
-import {Button, Checkbox, IconButton} from "@mui/material";
+import {Button, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {Task} from "./Task";
 
 
 export type TaskType = {
@@ -31,10 +29,16 @@ type PropsType = {
     filterValue: FilterValuesType
 }
 
-export function Todolist(props: PropsType) {
+export const Todolist = memo((props: PropsType) => {
     const dispatch = useDispatch()
     const tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[props.todolistID])
 
+    const addTask = useCallback((title: string) => {
+        dispatch(addTaskAC(props.todolistID, title))
+    }, [dispatch, props.todolistID])
+    const changeTodolistTitle = useCallback((title: string) => {
+        dispatch(changeTodolistTitleAC(props.todolistID, title))
+    }, [dispatch, props.todolistID])
 
     let filteredTasks = tasks
     if (props.filterValue === 'active') {
@@ -47,33 +51,20 @@ export function Todolist(props: PropsType) {
     return <div>
         <h3>
             <EditableSpan title={props.todolistTitle}
-                          callBack={
-                              (changedTodolistTitle) => dispatch(changeTodolistTitleAC(props.todolistID, changedTodolistTitle))
-                          }
+                          callBack={changeTodolistTitle}
             />
-            <IconButton aria-label="delete">
-                <DeleteIcon onClick={() => dispatch(removeTodolistAC(props.todolistID))}/>
+            <IconButton aria-label="delete" onClick={() => dispatch(removeTodolistAC(props.todolistID))}>
+                <DeleteIcon/>
             </IconButton>
 
         </h3>
-        <AddItemForm buttonName={'+'}
-                     callBack={(title) => dispatch(addTaskAC(props.todolistID, title))}/>
+        <AddItemForm callBack={addTask}/>
 
         <ul>
             {
                 filteredTasks.map(t => {
                     return (
-                        <li key={t.id}>
-                            <Checkbox defaultChecked size={'small'} color={'success'} checked={t.isDone} onChange={() =>
-                                dispatch(changeTaskStatusAC(props.todolistID, t.id, !t.isDone))}/>
-                            <EditableSpan title={t.title}
-                                          callBack={(changedTaskTitle) =>
-                                              dispatch(changeTaskTitleAC(props.todolistID, t.id, changedTaskTitle))}
-                            />
-                            <IconButton aria-label="delete">
-                                <DeleteIcon fontSize={'small'} onClick={() => dispatch(removeTaskAC(props.todolistID, t.id))}/>
-                            </IconButton>
-                        </li>
+                        <Task task={t} todolistID={props.todolistID} key={t.id}/>
                     )
                 })
             }
@@ -91,4 +82,4 @@ export function Todolist(props: PropsType) {
             </Button>
         </div>
     </div>
-}
+})

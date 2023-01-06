@@ -1,18 +1,14 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button, TextField} from "@mui/material";
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from "react";
+import {IconButton, TextField} from "@mui/material";
+import {AddBox} from "@mui/icons-material";
 
 type PropsType = {
-    buttonName: string
     callBack: (value: string) => void
 }
 
-export const AddItemForm = ({buttonName, callBack, ...restProps}: PropsType) => {
+export const AddItemForm = memo(({callBack, ...restProps}: PropsType) => {
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
-
-    // const titleError = {
-    //     color: 'red'
-    // }
 
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.currentTarget.value)
@@ -28,21 +24,17 @@ export const AddItemForm = ({buttonName, callBack, ...restProps}: PropsType) => 
     }
 
     const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
+        if (error !== null) {
+            setError(null);
+        }
         if (event.key === 'Enter') {
-           onClickHandler()
-            setTitle('')
+            onClickHandler()
         }
     }
 
     return (
         <div>
-            {/*<input type="text" value={title}*/}
-            {/*       onChange={onChangeHandler}*/}
-            {/*       onKeyPress={onKeyPressHandler}*/}
-            {/*/>*/}
-            <TextField id="outlined-basic"
-                       size={'small'}
+            <TextField error={!!error}
                        value={title}
                        label={error ? 'Title is required' : ''}
                        variant="outlined"
@@ -51,8 +43,9 @@ export const AddItemForm = ({buttonName, callBack, ...restProps}: PropsType) => 
                        onChange={onChangeHandler}
                        onKeyDown={onKeyPressHandler}
             />
-            <Button size={'small'} variant={'contained'} color={'info'} onClick={onClickHandler}>{buttonName}</Button>
-            {/*{error && <div style={titleError}>{error}</div>}*/}
+            <IconButton color={'info'} onClick={onClickHandler}>
+                <AddBox/>
+            </IconButton>
         </div>
     )
-}
+})
